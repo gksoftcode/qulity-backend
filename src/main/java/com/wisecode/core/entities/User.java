@@ -22,7 +22,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"id"},callSuper = false)
-public class User extends DateAudit implements UserDetails {
+public class User  implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

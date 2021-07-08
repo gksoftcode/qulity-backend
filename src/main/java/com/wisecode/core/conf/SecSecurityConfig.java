@@ -100,6 +100,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                     .permitAll()
                     .antMatchers("/api/common/**").permitAll()
+                    .antMatchers("/api/report/**").permitAll()
                     .antMatchers("/view/**").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
                     .permitAll()
