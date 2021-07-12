@@ -5,11 +5,17 @@
  */
 package com.wisecode.core.controller;
 
+import com.wisecode.core.entities.Attachment;
+import com.wisecode.core.entities.WorkGuide;
+import com.wisecode.core.repositories.AttachmentRepository;
 import com.wisecode.core.repositories.WorkGuideRepository;
+import com.wisecode.core.util.SystemUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.extern.log4j.Log4j2;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -35,6 +41,9 @@ public class ReportController {
     @Autowired
     WorkGuideRepository repository;
 
+    @Autowired
+    AttachmentRepository attachmentRepository;
+
     @PostMapping("/workguide/{id}")
     public @ResponseBody
     Map<String, Object> generateWorkProcedureReport(@PathVariable Long id) throws IOException, JRException {
@@ -42,7 +51,16 @@ public class ReportController {
         try {
 
             Map<String, Object> params = new HashMap<>();
-            params.put("procedure", repository.getOne(id));
+            WorkGuide workguide = repository.getOne(id);
+            params.put("procedure", workguide);
+
+            params.put("attachment", attachmentRepository.findByDepartmentIdAndStatusOrderByOrderNo(workguide.getDepartmentId(), AttachmentController.STATUS_APPROVED));
+
+            InputStream header = Thread.currentThread().getContextClassLoader().getResourceAsStream("jasper/images/HM_logo.jpg");
+            params.put("header", header);
+
+            InputStream tick = Thread.currentThread().getContextClassLoader().getResourceAsStream("jasper/images/tick.jpg");
+            params.put("tick", tick);
 
             InputStream jasperStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("jasper/work_procedure.jasper");
 

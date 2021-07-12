@@ -3,33 +3,6 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="72fd37cd-4d1f-4cfc-bc1e-291119f6e0c3">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="net.sf.jasperreports.awt.ignore.missing.font" value="true"/>
-	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
-	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
-			<pen lineWidth="0.5" lineColor="#000000"/>
-			<topPen lineWidth="0.5" lineColor="#000000"/>
-			<leftPen lineWidth="0.5" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
-			<rightPen lineWidth="0.5" lineColor="#000000"/>
-		</box>
-	</style>
 	<subDataset name="Dataset1" uuid="9f84a9b0-fe64-4bb2-9bdd-0bda8d3ace72">
 		<queryString>
 			<![CDATA[]]>
@@ -52,6 +25,7 @@
 	</subDataset>
 	<subDataset name="Dataset4" uuid="b0054492-f6e3-4b95-bfff-18aee52cc4ba">
 		<parameter name="procedure" class="com.wisecode.core.entities.WorkGuide"/>
+		<parameter name="tick" class="java.io.InputStream"/>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -63,9 +37,7 @@
 	<subDataset name="Dataset5" uuid="600e8e87-0199-49f8-bef0-29837bda4c3a">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 		<parameter name="procedure" class="com.wisecode.core.entities.WorkGuide"/>
-		<parameter name="name1" class="java.lang.String">
-			<defaultValueExpression><![CDATA[$P{procedure}.getResponsibilities().get(0).getJob().getName()]]></defaultValueExpression>
-		</parameter>
+		<parameter name="tick" class="java.io.InputStream"/>
 		<queryString>
 			<![CDATA[]]>
 		</queryString>
@@ -80,172 +52,203 @@
 		<field name="val7" class="java.lang.Boolean"/>
 		<field name="val8" class="java.lang.Boolean"/>
 		<field name="val9" class="java.lang.Boolean"/>
+		<field name="files" class="java.util.List"/>
+	</subDataset>
+	<subDataset name="Dataset6" uuid="8a9ec1aa-364b-404d-b605-515252b3bedb">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="name" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="Dataset7" uuid="d9232270-920a-4882-98ee-b4ceea6296a8">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+		<parameter name="procedures" class="com.wisecode.core.entities.WorkGuide"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="name" class="java.lang.String"/>
+		<field name="version" class="java.lang.Integer"/>
+		<field name="issueDate" class="java.util.Date"/>
+		<field name="orderNo" class="java.lang.Integer"/>
 	</subDataset>
 	<parameter name="header" class="java.io.InputStream"/>
 	<parameter name="footer" class="java.io.InputStream"/>
 	<parameter name="background" class="java.io.InputStream"/>
 	<parameter name="procedure" class="com.wisecode.core.entities.WorkGuide"/>
+	<parameter name="tick" class="java.io.InputStream"/>
+	<parameter name="attachment" class="java.util.List" nestedType="com.wisecode.core.entities.Attachment"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<background>
-		<band height="802" splitType="Stretch">
-			<frame>
-				<reportElement x="0" y="10" width="560" height="792" uuid="4271230d-b6e9-408b-a47e-cf4f238c74f7"/>
-				<rectangle>
-					<reportElement key="rectangle-2" x="0" y="-10" width="560" height="802" uuid="1e5d549f-03ac-466a-a00e-07ab9fe45d4d"/>
-					<graphicElement>
-						<pen lineWidth="3.0" lineStyle="Double"/>
-					</graphicElement>
-				</rectangle>
-			</frame>
-		</band>
-	</background>
-	<detail>
-		<band height="246" splitType="Stretch">
+	<pageHeader>
+		<band height="106">
+			<image>
+				<reportElement x="2" y="3" width="108" height="98" uuid="b18cb84d-4b48-4d1f-b4fc-c8dc0127db80"/>
+				<imageExpression><![CDATA[$P{header}]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement x="130" y="10" width="300" height="30" forecolor="#000000" uuid="bee816e5-5458-4d02-9b1b-8497a565eca7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Bukra" size="22" isBold="true" isItalic="false"/>
-				</textElement>
-				<text><![CDATA[بلدية الحمرية
-]]></text>
-			</staticText>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="85" y="50" width="390" height="1" uuid="02eb737e-971b-4367-b50c-01ca09d3b4d1"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#000000"/>
-				</graphicElement>
-			</line>
-			<textField>
-				<reportElement x="300" y="80" width="150" height="20" uuid="363ea634-7b34-4f34-90e7-f131385f1441"/>
+				<reportElement x="202" y="26" width="110" height="20" forecolor="#000000" uuid="777eb1b8-7764-40f0-a029-fe21c6b56d0b"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Bukra" size="12" isItalic="true"/>
+					<font fontName="Bukra" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{procedure}.getDepartment().getName()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="435" y="80" width="110" height="20" forecolor="#7A80F0" uuid="3cbb516a-9ebc-401d-a61c-c9a0d6a94616"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Bukra" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[الوحدة الادارية]]></text>
+				<text><![CDATA[بلدية الحمرية]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="161" y="80" width="110" height="20" forecolor="#7A80F0" uuid="fc70e96d-a311-4656-8550-2a03c9dfb3aa"/>
+				<reportElement x="140" y="58" width="172" height="20" forecolor="#000000" uuid="feb28ae7-8b89-489a-b5e2-c8ec4d21ace5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Bukra" size="12" isBold="true"/>
+					<font fontName="Bukra" size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[رقم الوثيقة]]></text>
+				<text><![CDATA[دليل المراجعة الادارية]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="3" width="75" height="20" forecolor="#050505" uuid="fc70e96d-a311-4656-8550-2a03c9dfb3aa"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[رقم الوثيقة:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="11" y="80" width="150" height="20" uuid="150da57e-df45-4c55-a110-563093332767"/>
+				<reportElement x="348" y="3" width="130" height="20" uuid="150da57e-df45-4c55-a110-563093332767"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Bukra" size="12" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{procedure}.getDocumentNo()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="437" y="110" width="110" height="20" forecolor="#7A80F0" uuid="80aa909a-ad41-4970-bf39-3a80ff614569"/>
+				<reportElement x="488" y="33" width="65" height="20" forecolor="#050505" uuid="c925b78e-48cb-4320-a625-c3fc403750ab"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Bukra" size="12" isBold="true"/>
+					<font fontName="Bukra" size="12" isBold="false"/>
 				</textElement>
-				<text><![CDATA[تاريخ الاصدار]]></text>
+				<text><![CDATA[النسخة:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="302" y="110" width="150" height="20" uuid="320c0f80-3208-4a1a-b861-76fe98417afb"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Bukra" size="12" isItalic="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{procedure}.getIssueDate()]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="161" y="110" width="110" height="20" forecolor="#7A80F0" uuid="c925b78e-48cb-4320-a625-c3fc403750ab"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Bukra" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[النسخة]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="11" y="110" width="150" height="20" uuid="f56736ed-0359-40b7-b371-a6e298bc47ef"/>
+				<reportElement x="368" y="34" width="110" height="20" uuid="f56736ed-0359-40b7-b371-a6e298bc47ef"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Bukra" size="12" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{procedure}.getVersion()]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="318" y="161" width="195" height="30" forecolor="#7A80F0" uuid="1546c6a7-9f06-4734-87d1-78e1371c2fb1"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+			<staticText>
+				<reportElement x="481" y="61" width="72" height="20" forecolor="#050505" uuid="80aa909a-ad41-4970-bf39-3a80ff614569"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="12" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA["1 - الغرض"]]></textFieldExpression>
+				<text><![CDATA[تاريخ الاصدار:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="358" y="61" width="120" height="20" uuid="320c0f80-3208-4a1a-b861-76fe98417afb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($P{procedure}.getIssueDate())]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="100" width="553" height="1" uuid="a3b08ca5-1d8d-4d99-9ebb-52e25a3ec674"/>
+			</line>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="442">
+			<staticText>
+				<reportElement x="140" y="280" width="218" height="30" forecolor="#000000" uuid="159b4a8c-f234-4170-a3ce-993fabaf9116"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="false"/>
+				</textElement>
+				<text><![CDATA[دليل المراجعة الادارية]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="441" width="100" height="1" uuid="6aa617c0-1506-4462-8744-1ff940f3bc86"/>
+			</break>
+		</band>
+		<band height="81" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="10" y="193" width="534" height="40" uuid="822df911-5a9d-42f0-bb1e-313f4971f71f"/>
+				<reportElement x="2" y="41" width="502" height="40" uuid="822df911-5a9d-42f0-bb1e-313f4971f71f"/>
 				<box padding="5">
 					<pen lineWidth="0.5" lineStyle="Dotted"/>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Bukra" size="12"/>
 					<paragraph lineSpacing="AtLeast"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{procedure}.getObjective()]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="507" y="161" width="35" height="30" forecolor="#000000" uuid="6e0c5d38-47cb-4f14-950d-eaa23ed52d50"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+			<staticText>
+				<reportElement x="504" y="10" width="35" height="30" forecolor="#000000" uuid="6bd7d0cc-db20-4d40-b6e9-c90a8562d0a7"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[.1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="412" y="10" width="92" height="30" forecolor="#000000" uuid="5734b3f6-13c9-4679-913c-eebbf4ee3bbb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الغرض]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="504" y="41" width="35" height="40" forecolor="#000000" uuid="21e4f2c0-f580-4383-b62c-108068ee7c53"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1.1]]></text>
+			</staticText>
 		</band>
-		<band height="99">
+		<band height="81">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="14" y="49" width="534" height="40" uuid="2263deb7-c845-4cfb-b5a8-ad94f4f55af8"/>
+				<reportElement x="2" y="41" width="501" height="40" uuid="2263deb7-c845-4cfb-b5a8-ad94f4f55af8"/>
 				<box padding="5">
 					<pen lineWidth="0.5" lineStyle="Dotted"/>
-					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Top">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Bukra" size="12"/>
 					<paragraph lineSpacing="AtLeast"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{procedure}.getDomain()]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="513" y="10" width="35" height="30" forecolor="#000000" uuid="390203a4-4db8-4cb6-b8b0-a2c4946eb98b"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+			<staticText>
+				<reportElement x="406" y="7" width="98" height="30" forecolor="#000000" uuid="2dfeebc4-3ca9-45e5-a67f-78739032cbd9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="325" y="10" width="195" height="30" forecolor="#7A80F0" uuid="46f7d82f-6bba-434c-82c2-a32dfe1c8123"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+				<text><![CDATA[النظاق]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="504" y="7" width="35" height="30" forecolor="#000000" uuid="f2e738d4-b7af-489f-94f3-3e4d201dfcca"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["2 - النظاق"]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[.2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="503" y="41" width="35" height="40" forecolor="#000000" uuid="638c0fc4-d95c-4cf1-aeb0-156521c9b1d6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[2.1]]></text>
+			</staticText>
 		</band>
-		<band height="107">
+		<band height="80">
 			<componentElement>
-				<reportElement x="20" y="51" width="528" height="38" uuid="2524e969-1be8-4075-9ed9-a6384a1b8a7a">
+				<reportElement x="2" y="42" width="537" height="38" uuid="2524e969-1be8-4075-9ed9-a6384a1b8a7a">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="refernce"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" uuid="0a0bd935-7df5-4762-b8d2-c3c8559337fa">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{procedure}.getReferences())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="38" width="528">
+					<jr:listContents height="38" width="537">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="0" width="460" height="38" uuid="dc1264d4-47ce-441d-8480-02da89b66fb9"/>
+							<reportElement x="0" y="0" width="500" height="38" uuid="dc1264d4-47ce-441d-8480-02da89b66fb9"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -253,69 +256,49 @@
 								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textElement textAlignment="Right" verticalAlignment="Top">
+							<textElement textAlignment="Right" verticalAlignment="Middle">
 								<font fontName="Bukra" size="12"/>
 								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 						</textField>
-						<textField isStretchWithOverflow="true">
-							<reportElement x="460" y="0" width="47" height="38" forecolor="#000000" uuid="2e0e5080-1c1e-4fc7-9061-c57eb9213900"/>
-							<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-								<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+						<textField>
+							<reportElement x="500" y="0" width="36" height="36" uuid="39297f0d-f1c9-4012-b0da-19d22ee8ab75"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="16" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA["<li>3."+$V{REPORT_COUNT}+"</li>"]]></textFieldExpression>
+							<textFieldExpression><![CDATA["3."+$V{REPORT_COUNT}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="512" y="10" width="35" height="30" forecolor="#000000" uuid="206e0d35-8ff5-4025-b5e4-66e10284df1a"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+			<staticText>
+				<reportElement x="504" y="7" width="35" height="30" forecolor="#000000" uuid="6af16750-346f-4379-8ed3-a0ccb976eacf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="323" y="10" width="195" height="30" forecolor="#7A80F0" uuid="38b2b977-8040-4f37-8ff5-00795a5b7c8b"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+				<text><![CDATA[.3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="404" y="7" width="100" height="30" forecolor="#000000" uuid="2361930e-09cf-4893-9b1d-78cf898bd00d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["3 - المرجع"]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="21" y="44" width="527" height="1" uuid="395f5cfb-6e8e-42cf-8b2e-9b46602b2a34"/>
-			</line>
+				<text><![CDATA[المرجع]]></text>
+			</staticText>
 		</band>
-		<band height="148">
-			<line>
-				<reportElement x="21" y="45" width="527" height="1" uuid="83397926-ace9-4c73-ac60-afa22c5c011b"/>
-			</line>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="514" y="11" width="35" height="30" forecolor="#000000" uuid="ea2421e7-54a2-46b1-9511-c08db3f1c15b"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="325" y="11" width="195" height="30" forecolor="#7A80F0" uuid="58adc9c2-7f92-4c0f-a600-b3cba08d724c"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["4 - مصطلحات وتعاريف"]]></textFieldExpression>
-			</textField>
+		<band height="117">
 			<componentElement>
-				<reportElement x="20" y="52" width="528" height="78" uuid="3eea4751-ffb4-48ee-96b0-e1d052bee65c">
+				<reportElement x="2" y="39" width="537" height="78" uuid="3eea4751-ffb4-48ee-96b0-e1d052bee65c">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="defination"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset2" uuid="b32ba677-604c-426e-aeee-0c8b060a7eff">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{procedure}.getDefinitions())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="78" width="528">
+					<jr:listContents height="78" width="537">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="0" width="460" height="38" forecolor="#3A77E0" uuid="c76ecd6a-810f-4786-b62e-0736002ac05d"/>
+							<reportElement x="0" y="0" width="500" height="38" forecolor="#080808" uuid="c76ecd6a-810f-4786-b62e-0736002ac05d"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -323,21 +306,14 @@
 								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textElement textAlignment="Right" verticalAlignment="Top">
-								<font fontName="Bukra" size="14" isBold="true"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="14" isBold="false"/>
 								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement x="460" y="0" width="47" height="38" forecolor="#5181E8" uuid="42103d8e-f522-499e-a7c5-c028a9ddd868"/>
-							<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-								<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-							</textElement>
-							<textFieldExpression><![CDATA["<li>4."+$V{REPORT_COUNT}+"</li>"]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true">
-							<reportElement x="9" y="38" width="451" height="38" forecolor="#000000" uuid="511880c0-ad3a-41be-9bf7-9ba573eb235f"/>
+							<reportElement x="0" y="38" width="500" height="38" forecolor="#080808" uuid="511880c0-ad3a-41be-9bf7-9ba573eb235f"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -345,28 +321,49 @@
 								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textElement textAlignment="Right" verticalAlignment="Top">
-								<font fontName="Bukra" size="12"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="12" isBold="false"/>
 								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 						</textField>
+						<textField>
+							<reportElement x="500" y="1" width="36" height="36" uuid="e2042acc-aa4c-4e39-a2a9-964c3f6f7d8e"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="16" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["4."+$V{REPORT_COUNT}]]></textFieldExpression>
+						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
+			<staticText>
+				<reportElement x="504" y="5" width="35" height="30" forecolor="#000000" uuid="cff56cb8-61b4-47c1-82d2-8070ab6865f5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[.4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="5" width="214" height="30" forecolor="#000000" uuid="4f4d8764-4159-421a-9063-935fb1cb40bf"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مصطلحات وتعاريف]]></text>
+			</staticText>
 		</band>
-		<band height="164">
+		<band height="120">
 			<componentElement>
-				<reportElement x="19" y="45" width="528" height="78" uuid="9b7ac867-3eed-4627-830b-512894bc9590">
+				<reportElement x="2" y="42" width="537" height="78" uuid="9b7ac867-3eed-4627-830b-512894bc9590">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="responsiblity"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset3" uuid="13fd146e-bebd-4cd9-a165-e43a2a7a88d7">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{procedure}.getResponsibilities())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="78" width="528">
+					<jr:listContents height="78" width="537">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="0" width="460" height="38" forecolor="#3A77E0" uuid="27766963-571a-46d5-885d-2cdbdbb06bab"/>
+							<reportElement x="0" y="0" width="500" height="38" forecolor="#000000" uuid="27766963-571a-46d5-885d-2cdbdbb06bab"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -374,21 +371,14 @@
 								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textElement textAlignment="Right" verticalAlignment="Top">
-								<font fontName="Bukra" size="14" isBold="true"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="14" isBold="false"/>
 								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{job.name}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement x="460" y="0" width="47" height="38" forecolor="#5181E8" uuid="46fcfcab-3ccb-4c4f-b5ce-45a16b5864a8"/>
-							<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-								<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-							</textElement>
-							<textFieldExpression><![CDATA["<li>5."+$V{REPORT_COUNT}+"</li>"]]></textFieldExpression>
-						</textField>
-						<textField isStretchWithOverflow="true">
-							<reportElement x="9" y="38" width="451" height="38" forecolor="#000000" uuid="502af9ed-cf76-4304-a1f2-aa8875d64589"/>
+							<reportElement x="0" y="38" width="500" height="38" forecolor="#000000" uuid="502af9ed-cf76-4304-a1f2-aa8875d64589"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -396,53 +386,40 @@
 								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
-							<textElement textAlignment="Right" verticalAlignment="Top">
-								<font fontName="Bukra" size="12"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="12" isBold="false"/>
 								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 						</textField>
+						<textField>
+							<reportElement x="500" y="1" width="36" height="36" uuid="d80b16de-2012-4af7-9d04-c3f5c7413614"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="16" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["5."+$V{REPORT_COUNT}]]></textFieldExpression>
+						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="323" y="9" width="195" height="30" forecolor="#7A80F0" uuid="69b6876b-0aca-4e71-acad-32223b0b7968"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+			<staticText>
+				<reportElement x="503" y="8" width="35" height="30" forecolor="#000000" uuid="cae1fe94-cda1-4d44-a9aa-f2fa7afd99b2"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["5 - المسؤوليات"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="512" y="9" width="35" height="30" forecolor="#000000" uuid="1b9de304-647f-4df6-ae0b-98950a8ea580"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+				<text><![CDATA[.5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="8" width="214" height="30" forecolor="#000000" uuid="d1a3676f-f93f-46bb-b56a-13688506676f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="18" y="43" width="527" height="1" uuid="5f32677a-b028-4d31-88d9-745b951b2e60"/>
-			</line>
+				<text><![CDATA[المسؤوليات]]></text>
+			</staticText>
 		</band>
-		<band height="320">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="325" y="10" width="195" height="30" forecolor="#7A80F0" uuid="92996146-24dc-46db-b644-719cf34a7963"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[" 6 - الاجراءات"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="514" y="10" width="35" height="30" forecolor="#000000" uuid="4e799ae7-aba5-47fe-ae78-e2d5f37413f3"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="20" y="44" width="527" height="1" uuid="6ff3de2d-90ba-47fe-b9c4-165161540ba0"/>
-			</line>
+		<band height="390">
 			<componentElement>
-				<reportElement x="20" y="60" width="510" height="207" uuid="51cd5414-04e5-457d-a179-4840d246a6bb"/>
+				<reportElement x="2" y="46" width="536" height="284" uuid="51cd5414-04e5-457d-a179-4840d246a6bb"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset4" uuid="bc15ae58-0b8a-4632-9a59-89fab8111e0c">
 						<datasetParameter name="procedure">
@@ -450,9 +427,9 @@
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{procedure}.getProcedures())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="207" width="510">
+					<jr:listContents height="284" width="536">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="0" width="463" height="38" forecolor="#000000" uuid="0bfdcf1c-e690-437b-854c-877f105a1cca"/>
+							<reportElement x="0" y="0" width="500" height="38" forecolor="#000000" uuid="0bfdcf1c-e690-437b-854c-877f105a1cca"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -466,304 +443,429 @@
 							</textElement>
 							<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 						</textField>
-						<textField isStretchWithOverflow="true">
-							<reportElement x="463" y="2" width="47" height="38" forecolor="#5181E8" uuid="b7e77536-e6af-4c3d-93a3-d22b837dfa77"/>
-							<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-								<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+						<textField>
+							<reportElement x="500" y="1" width="36" height="36" uuid="c47771c0-fd78-4a00-8a7c-2505ff7d5047"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="16" isBold="true"/>
 							</textElement>
-							<textFieldExpression><![CDATA["6."+$V{REPORT_COUNT}+"-"]]></textFieldExpression>
+							<textFieldExpression><![CDATA["6."+$V{REPORT_COUNT}]]></textFieldExpression>
 						</textField>
 						<frame>
-							<reportElement x="10" y="50" width="496" height="60" uuid="e7795e72-cb69-4b9e-9297-0a18f6c041c9"/>
-							<componentElement>
-								<reportElement x="0" y="0" width="496" height="60" uuid="8226bfb2-c364-4815-8082-7c46d51b4ba0">
-									<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
-									<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
-									<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
-									<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
-								</reportElement>
-								<jr:table>
-									<datasetRun subDataset="Dataset5" uuid="3b688ec4-daed-460a-a49f-798adf81085a">
-										<datasetParameter name="procedure">
-											<datasetParameterExpression><![CDATA[$P{procedure}]]></datasetParameterExpression>
-										</datasetParameter>
-										<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{steps})]]></dataSourceExpression>
-									</datasetRun>
-									<jr:column width="41" uuid="7658d519-5973-458b-9688-08b2959c353b">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
-											<staticText>
-												<reportElement x="0" y="0" width="41" height="30" uuid="da4fadd7-a1ad-49c9-8f6c-ccab671467c2"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<text><![CDATA[الملاحظات]]></text>
-											</staticText>
-										</jr:tableHeader>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="aff65c75-5aa0-4db0-9a5e-049ddebd246f"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="42" uuid="cdbb18d6-73b7-4ce2-937b-60ec40b876d3">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 9]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1"/>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="42" height="30" uuid="eb204063-5390-41af-9506-11e412fb5596"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val9}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="42" uuid="2289e2d3-9605-4acc-8e3f-71b1a351a788">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 8]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1"/>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="42" height="30" uuid="91f0996e-f882-4ed1-ae5d-55602882d9ac"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val8}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="bd09add9-f176-4004-b5b8-a372a4967646">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 7]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1"/>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="7757607c-0d0f-445c-a519-6aa94b90989c"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val7}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="ef80c81f-0cf8-40da-a686-333b47acb707">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 6]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1"/>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="3e47077b-6ff2-482a-95f2-c27197429869"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val6}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="d5cf65c2-e0f0-4a94-b5e9-3ec3ef7621a3">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 5]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1"/>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="f328380c-0206-4864-9a2a-aacda650701c"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val5}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="42" uuid="ce951a86-6878-4bd9-ac76-8a1645cb0d25">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 4]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1"/>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="42" height="30" uuid="cc0f9d5b-7328-4285-99d5-382b73e9ba6d"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val4}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="65f4aebf-4e82-4941-9d11-d3132f204718">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column8"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 3]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
-											<textField>
-												<reportElement stretchType="ContainerHeight" x="0" y="0" width="41" height="30" uuid="e2c13e22-7b60-4541-9e18-10c4fec703f2">
-													<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 1]]></printWhenExpression>
-												</reportElement>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(2).getJob().getName()]]></textFieldExpression>
-											</textField>
-										</jr:tableHeader>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="ea7c27ba-2304-4c7b-bbd5-25cb3135343d"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val3}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="45e8bd29-3157-4015-86cc-2042b9c34fae">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column9"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 2]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
-											<textField>
-												<reportElement stretchType="ContainerHeight" x="0" y="0" width="41" height="30" uuid="748e5d24-8925-41f2-a42c-fd1b07037f5c">
-													<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 1]]></printWhenExpression>
-												</reportElement>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(1).getJob().getName()]]></textFieldExpression>
-											</textField>
-										</jr:tableHeader>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="d7d155ab-c06e-415b-8a3f-90ed88917e12"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle"/>
-												<textFieldExpression><![CDATA[$F{val2}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="1ee81098-2b6a-44c9-bbb2-9a96d4d26fb9">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column10"/>
-										<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 1]]></printWhenExpression>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
-											<textField>
-												<reportElement stretchType="ContainerHeight" x="0" y="0" width="41" height="30" uuid="122d0a9d-becc-415d-93cf-27c143c0f357">
-													<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 1]]></printWhenExpression>
-												</reportElement>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(0).getJob().getName()]]></textFieldExpression>
-											</textField>
-										</jr:tableHeader>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="5f256ff6-68a1-43c0-8c31-cb1f1d8767ee"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{val1}?" Yes":""]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="41" uuid="8f11a21d-7a6e-4acf-b857-8830cd6d1ff3">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column11"/>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
-											<staticText>
-												<reportElement x="0" y="0" width="41" height="30" uuid="8cc118c0-3930-40a4-b16f-459f4c158b44"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<text><![CDATA[وصف الخطوة]]></text>
-											</staticText>
-										</jr:tableHeader>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField>
-												<reportElement x="0" y="0" width="41" height="30" uuid="9b152d1b-75c8-4ebc-b0ba-aed34f2c8b56"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-									<jr:column width="42" uuid="eb530644-e278-4cc5-9aa9-204556e538ce">
-										<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column12"/>
-										<jr:tableHeader style="Table_TH" height="30" rowSpan="1">
-											<staticText>
-												<reportElement x="0" y="0" width="42" height="30" uuid="2b120849-26d5-4816-ac90-4d7740d97df0"/>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra"/>
-												</textElement>
-												<text><![CDATA[مسلسل]]></text>
-											</staticText>
-										</jr:tableHeader>
-										<jr:detailCell style="Table_TD" height="30">
-											<textField isStretchWithOverflow="true">
-												<reportElement x="0" y="0" width="42" height="30" forecolor="#000000" uuid="ef33dab9-a0df-48c2-8946-a2e78eaf0a44"/>
-												<box padding="5">
-													<pen lineWidth="0.5" lineStyle="Dotted"/>
-													<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-													<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-													<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-													<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-												</box>
-												<textElement textAlignment="Center" verticalAlignment="Middle">
-													<font fontName="Bukra" size="10" isBold="true"/>
-													<paragraph lineSpacing="AtLeast"/>
-												</textElement>
-												<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
-											</textField>
-										</jr:detailCell>
-									</jr:column>
-								</jr:table>
-							</componentElement>
-						</frame>
-						<frame>
-							<reportElement x="210" y="130" width="290" height="77" uuid="eda369e2-f858-4a96-a345-2994b5f9824c"/>
+							<reportElement x="0" y="170" width="536" height="80" uuid="eda369e2-f858-4a96-a345-2994b5f9824c"/>
 							<staticText>
-								<reportElement x="140" y="39" width="140" height="28" forecolor="#2E2BCC" uuid="350139a6-03eb-4918-a122-30dcc7416834"/>
+								<reportElement x="430" y="45" width="100" height="28" forecolor="#000000" uuid="350139a6-03eb-4918-a122-30dcc7416834"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font fontName="Bukra"/>
+									<font fontName="Bukra" isBold="true"/>
 								</textElement>
 								<text><![CDATA[الوقت لإجراء اللازم :	]]></text>
 							</staticText>
 							<textField isStretchWithOverflow="true">
-								<reportElement x="-10" y="39" width="150" height="28" forecolor="#000000" uuid="d74c2aa7-236b-4d4a-947e-699c1ed3f520"/>
+								<reportElement x="242" y="43" width="190" height="28" forecolor="#000000" uuid="d74c2aa7-236b-4d4a-947e-699c1ed3f520"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-									<font fontName="Bukra" size="10" isBold="true" isItalic="false"/>
+									<font fontName="Bukra" size="10" isBold="false" isItalic="false"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{period}]]></textFieldExpression>
 							</textField>
 							<textField isStretchWithOverflow="true">
-								<reportElement x="-10" y="0" width="150" height="28" forecolor="#000000" uuid="30ff844a-9745-41ac-b589-22e364ffada3"/>
+								<reportElement x="142" y="17" width="290" height="28" forecolor="#000000" uuid="30ff844a-9745-41ac-b589-22e364ffada3"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-									<font fontName="Bukra" size="10" isBold="true" isItalic="false"/>
+									<font fontName="Bukra" size="10" isBold="false" isItalic="false"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
 							</textField>
 							<staticText>
-								<reportElement x="140" y="0" width="140" height="28" forecolor="#2E2BCC" uuid="934a7363-46d2-4603-88d0-3d36ca910230"/>
+								<reportElement x="440" y="16" width="90" height="28" forecolor="#000000" uuid="934a7363-46d2-4603-88d0-3d36ca910230"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
-									<font fontName="Bukra"/>
+									<font fontName="Bukra" isBold="true"/>
 								</textElement>
 								<text><![CDATA[الملاحظات :	]]></text>
 							</staticText>
 						</frame>
+						<frame>
+							<reportElement x="0" y="60" width="536" height="73" uuid="cbacdba2-d6ad-4598-bad4-3d837c5ef804"/>
+							<componentElement>
+								<reportElement stretchType="ElementGroupHeight" x="0" y="40" width="536" height="31" uuid="1a891bd2-70ac-43a8-9315-1d0a508b3237">
+									<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+								</reportElement>
+								<jr:list printOrder="Vertical">
+									<datasetRun subDataset="Dataset5" uuid="de501c5d-8ab5-456e-9a2d-c575255e1075">
+										<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{steps})]]></dataSourceExpression>
+									</datasetRun>
+									<jr:listContents height="31" width="536">
+										<textField isStretchWithOverflow="true">
+											<reportElement x="510" y="0" width="26" height="30" forecolor="#000000" uuid="4f826b17-e99b-4b72-bfb2-f901043539ed"/>
+											<box padding="5">
+												<pen lineWidth="0.5" lineStyle="Dotted"/>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="10" isBold="false"/>
+												<paragraph lineSpacing="AtLeast"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement x="420" y="0" width="90" height="30" uuid="2673812e-b07e-4288-8cd8-a96dc2400cd8"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement x="340" y="0" width="80" height="30" uuid="441d1a6e-9be1-4f3c-bbca-c131bc126ddc"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+										</textField>
+										<componentElement>
+											<reportElement stretchType="ContainerHeight" x="260" y="0" width="80" height="10" uuid="1efc837f-1782-4d07-b8b9-1bc8d43d886a"/>
+											<jr:list printOrder="Vertical">
+												<datasetRun subDataset="Dataset6" uuid="1cc97f48-af5c-421d-bac1-54e83e3d82cb">
+													<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{files})]]></dataSourceExpression>
+												</datasetRun>
+												<jr:listContents height="10" width="80">
+													<textField isStretchWithOverflow="true">
+														<reportElement stretchType="ContainerHeight" x="0" y="0" width="80" height="10" uuid="84d17c05-a466-45eb-8917-bab2cba70cff"/>
+														<textElement textAlignment="Center" verticalAlignment="Middle">
+															<font fontName="Bukra" size="10"/>
+														</textElement>
+														<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+													</textField>
+												</jr:listContents>
+											</jr:list>
+										</componentElement>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="230" y="0" width="31" height="30" uuid="8335a94a-6211-40da-9fea-d7fb99897157"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val1}?" yes":""]]></textFieldExpression>
+										</textField>
+										<line>
+											<reportElement x="0" y="30" width="536" height="1" uuid="c9cf84f5-854f-4551-8fbe-a36a90e5d280"/>
+										</line>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="199" y="0" width="31" height="30" uuid="3de5a880-0f01-4850-b7de-e66f810b470f"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val2}?" yes":""]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="168" y="0" width="31" height="30" uuid="06794dcb-b445-4116-b3cf-35aa8b0456b1"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val3}?" yes":""]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="136" y="0" width="31" height="30" uuid="d6f319b0-5f7f-4fea-8f42-a049a9cfb069"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val4}?" yes":""]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="73" y="0" width="31" height="30" uuid="ad1afbce-4ed7-40b0-bf4e-5a741f5fbd9a"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val6}?" yes":""]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="41" y="0" width="31" height="30" uuid="cba77d2a-f6ad-44f6-a1e6-73cfec8d43f7"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val7}?" yes":""]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="105" y="0" width="31" height="30" uuid="62d2abf3-b442-4d7b-9709-bc9b09f4ee71"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val5}?" yes":""]]></textFieldExpression>
+										</textField>
+										<textField>
+											<reportElement stretchType="ElementGroupHeight" x="9" y="0" width="31" height="30" uuid="a414b186-afa2-449d-9639-85c477264a69"/>
+											<box>
+												<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+												<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+											</box>
+											<textElement textAlignment="Center" verticalAlignment="Middle">
+												<font fontName="Bukra" size="12" isBold="false"/>
+											</textElement>
+											<textFieldExpression><![CDATA[$F{val8}?" yes":""]]></textFieldExpression>
+										</textField>
+									</jr:listContents>
+								</jr:list>
+							</componentElement>
+							<staticText>
+								<reportElement x="510" y="0" width="24" height="30" uuid="ff9c0eb0-4da3-4d51-bfff-d43d2453b803"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<text><![CDATA[مسلسل]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="420" y="2" width="88" height="30" uuid="13df0d6d-8cf6-4758-93b5-4993af7f5fb9"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<text><![CDATA[وصف الخطوة]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="340" y="2" width="79" height="30" uuid="717165a9-8621-4322-8de4-1f584e13fe92"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<text><![CDATA[الملاحظات]]></text>
+							</staticText>
+							<staticText>
+								<reportElement x="260" y="0" width="80" height="30" uuid="5ef1aed6-17ea-47c6-9055-aaf5c5bcb300"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<text><![CDATA[الزثائق ذات العلاقة]]></text>
+							</staticText>
+							<textField>
+								<reportElement x="230" y="0" width="29" height="30" uuid="b9d91ade-7b00-43fd-bd39-f37b7bd9411e">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 1]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().size()>1?$P{procedure}.getResponsibilities().get(0).getJob().getName():""]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="200" y="0" width="29" height="30" uuid="10acff3b-b8ad-42cf-a8ab-861b0f4af96d">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 2]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(2).getJob().getName()]]></textFieldExpression>
+							</textField>
+							<line>
+								<reportElement x="2" y="32" width="532" height="1" uuid="e1b92cf1-870e-4467-8194-f30e9b9d3f68"/>
+							</line>
+							<textField>
+								<reportElement x="171" y="0" width="29" height="30" uuid="a459f5c8-4f37-4f41-bfe6-873220353393">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 3]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().size()>3?$P{procedure}.getResponsibilities().get(3).getJob().getName():""]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="139" y="0" width="29" height="30" uuid="fb3b135f-7f48-4a47-bcc4-6602d73ec5b8">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 4]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(4).getJob().getName()]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="106" y="1" width="29" height="30" uuid="57d08fa2-4f6d-4bf3-aa1e-db7ffa36c223">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 5]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(5).getJob().getName()]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="73" y="1" width="29" height="30" uuid="d901b982-a709-4782-a009-ffbb1caf74a0">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 6]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(6).getJob().getName()]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="40" y="2" width="29" height="30" uuid="8a666b9d-dfed-4dc0-b620-4ac8e75cb627">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 7]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(7).getJob().getName()]]></textFieldExpression>
+							</textField>
+							<textField>
+								<reportElement x="10" y="0" width="29" height="30" uuid="7f7cd70b-c271-4430-a388-97b2f7bbed99">
+									<printWhenExpression><![CDATA[$P{procedure}.getResponsibilities().size() >= 8]]></printWhenExpression>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Bukra"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$P{procedure}.getResponsibilities().get(8).getJob().getName()]]></textFieldExpression>
+							</textField>
+						</frame>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
+			<staticText>
+				<reportElement x="503" y="9" width="35" height="30" forecolor="#000000" uuid="e134b6a4-3864-4d5d-968f-722db369e30c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[.6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="9" width="223" height="30" forecolor="#000000" uuid="8c8ef3e3-436b-4979-aff9-85b3cd3ca318"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[الاجراءات]]></text>
+			</staticText>
 		</band>
 		<band height="88">
-			<textField isStretchWithOverflow="true">
-				<reportElement x="325" y="16" width="195" height="30" forecolor="#7A80F0" uuid="e94cd4ae-76f2-45ea-91be-07288110f549"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["7 - مؤشرات القياس"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement x="514" y="16" width="35" height="30" forecolor="#000000" uuid="2a72d6ab-b88b-497a-a968-1c674f87bc95"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle" markup="styled">
-					<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA["<li></li>"]]></textFieldExpression>
-			</textField>
 			<componentElement>
-				<reportElement x="21" y="48" width="507" height="40" uuid="2404d40d-d783-45c8-ab29-084a4619e280">
+				<reportElement x="2" y="48" width="536" height="40" uuid="2404d40d-d783-45c8-ab29-084a4619e280">
 					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value="pointer"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="Dataset1" uuid="6405944e-7765-4a32-844f-fe0e969a4aff">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{procedure}.getPointers())]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="40" width="507">
+					<jr:listContents height="40" width="536">
 						<textField isStretchWithOverflow="true">
-							<reportElement x="0" y="2" width="443" height="38" forecolor="#000000" uuid="d6eff0c4-3845-4998-a18b-ddde6041b8ce"/>
+							<reportElement x="0" y="2" width="500" height="38" forecolor="#000000" uuid="d6eff0c4-3845-4998-a18b-ddde6041b8ce"/>
 							<box padding="5">
 								<pen lineWidth="0.5" lineStyle="Dotted"/>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -772,49 +874,154 @@
 								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 							</box>
 							<textElement textAlignment="Right" verticalAlignment="Middle">
-								<font fontName="Bukra" size="14" isBold="true"/>
+								<font fontName="Bukra" size="14" isBold="false"/>
+								<paragraph lineSpacing="AtLeast"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="500" y="2" width="36" height="36" uuid="77f228e5-80c2-497e-a806-ca3bc24cb69b"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="16" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA["7."+$V{REPORT_COUNT}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="503" y="15" width="36" height="30" forecolor="#000000" uuid="8b43c238-91d8-4c39-b35f-12bfc70a5794"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[.7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="15" width="222" height="30" forecolor="#000000" uuid="8f7edf72-707a-4df0-88d1-e03f887f51b8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[مؤشرات القياس]]></text>
+			</staticText>
+		</band>
+		<band height="100">
+			<staticText>
+				<reportElement x="503" y="15" width="36" height="30" forecolor="#000000" uuid="01d89bb0-ad26-4234-8665-1095944a549a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[.8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="281" y="15" width="222" height="30" forecolor="#000000" uuid="c025d8f8-dea9-4e79-8f29-8ca69a67ab93"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Bukra" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ قائمة السجلات]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement stretchType="ElementGroupHeight" x="2" y="60" width="537" height="35" uuid="f48d4ac0-4f87-45da-abd3-27c13d41dec6">
+					<property name="net.sf.jasperreports.export.headertoolbar.table.name" value=""/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset7" uuid="042a8f66-6bb1-4d7a-b8f0-404bf67bc1b2">
+						<datasetParameter name="procedures">
+							<datasetParameterExpression><![CDATA[$P{procedure}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{attachment})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="35" width="537">
+						<textField>
+							<reportElement x="500" y="0" width="37" height="35" uuid="b2e65df8-00ba-455a-8d28-8ddba04067fb"/>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="16" isBold="false"/>
+							</textElement>
+							<textFieldExpression><![CDATA["8."+$V{REPORT_COUNT}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement x="372" y="0" width="128" height="33" forecolor="#000000" uuid="4a940e27-7ab8-4633-b5de-7196be016566"/>
+							<box padding="5">
+								<pen lineWidth="0.5" lineStyle="Dotted"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="14" isBold="false"/>
 								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
 							<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 						</textField>
 						<textField isStretchWithOverflow="true">
-							<reportElement x="450" y="0" width="47" height="38" forecolor="#5181E8" uuid="601acc43-150d-48bc-b55a-027e97935b9b"/>
-							<textElement textAlignment="Right" verticalAlignment="Middle" markup="none">
-								<font fontName="Bukra" size="16" isBold="true" isItalic="false"/>
+							<reportElement x="239" y="1" width="133" height="33" forecolor="#000000" uuid="7ac154ee-d9b8-443e-bc47-d8713be04568"/>
+							<box padding="5">
+								<pen lineWidth="0.5" lineStyle="Dotted"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="14" isBold="false"/>
+								<paragraph lineSpacing="AtLeast"/>
 							</textElement>
-							<textFieldExpression><![CDATA["7."+$V{REPORT_COUNT}+"-"]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$P{procedures}.getDocumentNo()+"/"+$F{orderNo}]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement x="139" y="1" width="100" height="33" forecolor="#000000" uuid="b745dcf7-e4e0-4a01-942e-2df73ca8834b"/>
+							<box padding="5">
+								<pen lineWidth="0.5" lineStyle="Dotted"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="14" isBold="false"/>
+								<paragraph lineSpacing="AtLeast"/>
+							</textElement>
+							<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MM-yyyy").format($F{issueDate})]]></textFieldExpression>
+						</textField>
+						<textField isStretchWithOverflow="true">
+							<reportElement x="33" y="0" width="100" height="33" forecolor="#000000" uuid="a0cdda5a-3826-4a2e-ac80-eb88c53dbb28"/>
+							<box padding="5">
+								<pen lineWidth="0.5" lineStyle="Dotted"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="Bukra" size="14" isBold="false"/>
+								<paragraph lineSpacing="AtLeast"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{version}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
-			<line>
-				<reportElement x="24" y="44" width="527" height="1" uuid="d72e1d40-51c6-49a7-84cb-10c84ceb0a95"/>
-			</line>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="20" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
-				<reportElement x="440" y="0" width="80" height="20" uuid="deb23d85-47bb-4de6-978e-113ff117188c"/>
+				<reportElement x="220" y="3" width="80" height="20" uuid="deb23d85-47bb-4de6-978e-113ff117188c"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="520" y="0" width="40" height="20" uuid="c6ce76ba-6e11-41e2-9415-72dc2eff001b"/>
+				<reportElement x="300" y="3" width="40" height="20" uuid="c6ce76ba-6e11-41e2-9415-72dc2eff001b"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="10" y="0" width="197" height="20" uuid="5a79d2a0-bcde-4ad5-adf0-c4eb2066f6dd"/>
-				<textElement>
-					<font size="10" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
+			<line>
+				<reportElement x="0" y="0" width="553" height="1" uuid="47308d8e-f923-42c9-9c68-a6d2f47a5b64"/>
+			</line>
 		</band>
 	</pageFooter>
 </jasperReport>
