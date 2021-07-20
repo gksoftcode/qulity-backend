@@ -41,8 +41,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner{
             role2.setName(RoleName.ROLE_USER);
             roleRepository.save(role2);
         }
-        List<User> users = userRepository.findAll();
-        if(users.size() == 0){
+        User users = userRepository.findByUsername("admin").orElse(null);
+        if(users == null){
             User admin = new User();
             admin.setUsername("admin");
             admin.setActive(true);

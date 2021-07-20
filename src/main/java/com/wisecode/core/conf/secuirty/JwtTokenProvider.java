@@ -57,7 +57,7 @@ public class JwtTokenProvider {
 
         return JWT.create()
                 .withIssuedAt(new Date())
-                .withSubject(SystemUtil.encrypt(user.getId().toString()))
+                .withSubject(SystemUtil.encrypt(user.getEmployee().getId().toString()))
                 .withExpiresAt(expiryDate)
                 .withIssuer("core")
                 .withClaim("active",user.getActive())

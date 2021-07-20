@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface AuditPlanRepository extends JpaRepository<AuditPlan,Long> {
 
-    @Query("select audit from AuditPlan audit where YEAR(audit.fromDate) = :yearId")
+    @Query("select audit from AuditPlan audit where (:yearId is null or YEAR(audit.fromDate) = :yearId)")
     Page<AuditPlan> search(@Param("yearId") Integer yearId, Pageable pageable);
 
     @Modifying

@@ -69,6 +69,10 @@ public interface WorkGuideRepository extends JpaRepository<WorkGuide, Long> {
     @Query("update WorkGuide wg set wg.status =:status where wg.id= :id")
     int updateStatus(@Param("id") Long id,@Param("status") Integer status);
 
+    @Modifying
+    @Query("update WorkGuide wg set wg.type =:type where wg.id= :id")
+    int updateType(@Param("id") Long id,@Param("type") Integer type);
+
 
 
     @Modifying
@@ -76,4 +80,7 @@ public interface WorkGuideRepository extends JpaRepository<WorkGuide, Long> {
             " where wg.id <> :id and wg.departmentId = :departmentId " +
             "and wg.type = com.wisecode.core.controller.WorkGuideController.TYPE_PRODUCTION")
     int updateOldType(@Param("id") Long id,@Param("departmentId") Long departmentId);
+
+    @Query("select wg from WorkGuide wg join wg.procedures proc join proc.steps stp join stp.files fi where wg.type = 10 and fi.id =:did")
+    WorkGuide findWorkGuideByAttachmentId(@Param("did") Long did);
 }

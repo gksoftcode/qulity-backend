@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.net.URLEncoder;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*",methods = {RequestMethod.GET,
@@ -42,23 +43,18 @@ AttachmentRepository repository;
     public ResponseEntity<FileUploadDtls> uploadFile(@RequestParam("file") MultipartFile file,
                                                      @RequestParam("name") String name,
                                                      @RequestParam("seq") Integer seq,
-                                                     RedirectAttributes redirectAttributes,  @CurrentUser User user) {
+                                                     RedirectAttributes redirectAttributes,  @CurrentUser User user) throws IOException {
 
         if(file != null && !file.isEmpty()){
-            try{
-                FileUploadDtls dtls = new FileUploadDtls();
-                File temp = File.createTempFile("quality",null);
-                file.transferTo(temp);
-                dtls.setFilePath(temp.getPath());
-                dtls.setFileType(file.getContentType());
-                dtls.setName(name);
-                dtls.setSeq(seq);
-                dtls.setOriginalFileName(file.getOriginalFilename());
-                return ResponseEntity.ok(dtls);
-            }catch
-            (Exception ex){
-                return ResponseEntity.badRequest().body(null);
-            }
+            FileUploadDtls dtls = new FileUploadDtls();
+            File temp = File.createTempFile("quality",null);
+            file.transferTo(temp);
+            dtls.setFilePath(temp.getPath());
+            dtls.setFileType(file.getContentType());
+            dtls.setName(name);
+            dtls.setSeq(seq);
+            dtls.setOriginalFileName(file.getOriginalFilename());
+            return ResponseEntity.ok(dtls);
         }
         return ResponseEntity.badRequest().body(null);
     }
