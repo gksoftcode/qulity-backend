@@ -45,7 +45,6 @@ public class DepartmentController extends GenericController<Department> {
     @Transactional
     @PostMapping("/setManager/{depId}/{managerId}")
     public ResponseEntity<Boolean> setManager(@PathVariable String depId, @PathVariable String managerId, @CurrentUser User user){
-        try{
            Long manager_id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(managerId))) ;
            Long dep_id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(depId))) ;
            Integer rows = repository.setManager(manager_id,dep_id);
@@ -54,9 +53,6 @@ public class DepartmentController extends GenericController<Department> {
            }else{
                return ResponseEntity.ok(false);
            }
-        }catch(Exception ex){
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     @Transactional

@@ -35,16 +35,12 @@ public abstract class GenericController<T extends BaseEntity> {
             repository.save(json);
             return ResponseEntity.ok(json);
         } else {
-            try {
-                long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
-                T entity = repository.findById(_id).orElse(null);
-                if (entity != null) {
-                    BeanUtils.copyProperties(json, entity);
-                    repository.save(entity);
-                    return ResponseEntity.ok(entity);
-                }
-            } catch (Exception exception) {
-                log.error(exception.getMessage());
+            long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
+            T entity = repository.findById(_id).orElse(null);
+            if (entity != null) {
+                BeanUtils.copyProperties(json, entity);
+                repository.save(entity);
+                return ResponseEntity.ok(entity);
             }
         }
         return ResponseEntity.badRequest().build();

@@ -33,4 +33,12 @@ public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
     @Query("update Attachment atta set atta.status = :nextStatus " +
             "where atta.id = :id")
     Integer updateStatus(@Param("id") Long id,@Param("nextStatus") Integer nextStatus);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update procedure_step_files set files_id =:s_id" +
+            " where procedure_step_id in (select procedure_step_id from procedure_step_files where files_id =:d_id and procedure_step_id in " +
+            "(select id from procedure_step where procedure_id in (select id from work_guide_procedure where work_guide_id in " +
+            "(select id from work_guide where work_guide_type = 10 ))) )",nativeQuery = true)
+    Integer replaceAttachment(@Param("s_id") Long s_id,@Param("d_id") Long ed_id);
 }

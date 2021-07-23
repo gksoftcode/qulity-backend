@@ -1,9 +1,13 @@
 package com.wisecode.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisecode.core.audit.UserDateAudit;
 import com.wisecode.core.util.SystemUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 
@@ -28,6 +32,16 @@ public class CheckListItem  extends UserDateAudit implements BaseEntity{
     Long auditPlanId;
 
     Integer auditResult;
+
+    @Column(name = "employee_id")
+    Long employeeId;
+
+    @JsonIgnoreProperties({"department","color","dob","gender","deleted","jobId",
+            "mobileNumber","user","shortName","createdAt","updatedAt","createdBy","updatedBy"})
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ManyToOne
+    @JoinColumn(name = "employee_id", insertable = false, updatable = false)
+    Employee employee;
 
     @Lob
     String remarks;

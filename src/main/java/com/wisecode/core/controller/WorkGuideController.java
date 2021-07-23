@@ -2,8 +2,12 @@ package com.wisecode.core.controller;
 
 import com.wisecode.core.RoleName;
 import com.wisecode.core.conf.secuirty.CurrentUser;
+import com.wisecode.core.dto.AuditPlanTransactionDto;
 import com.wisecode.core.dto.WorkGuideDto;
+import com.wisecode.core.dto.WorkGuideTransactionDto;
 import com.wisecode.core.entities.*;
+import com.wisecode.core.mapper.AuditPlanTransactionMapper;
+import com.wisecode.core.mapper.WorkGuideTransactionMapper;
 import com.wisecode.core.payload.*;
 import com.wisecode.core.repositories.DepartmentRepository;
 import com.wisecode.core.repositories.EmployeeRepository;
@@ -17,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -126,9 +131,8 @@ public class WorkGuideController extends GenericController<WorkGuide>{
             repository.save(json);
             return ResponseEntity.ok(json);
         } else {
-            try {
-                long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
-                WorkGuide entity = repository.findById(_id).orElse(null);
+            long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
+            WorkGuide entity = repository.findById(_id).orElse(null);
 //                if(json.getFileList() != null){
 //                    if(json.getFiles() == null) {
 //                        json.setFiles(new ArrayList<>());
@@ -159,13 +163,10 @@ public class WorkGuideController extends GenericController<WorkGuide>{
 //                        }catch(Exception ignored){}
 //                    }
 //                }
-                if (entity != null) {
-                    BeanUtils.copyProperties(json, entity);
-                    repository.save(entity);
-                    return ResponseEntity.ok(entity);
-                }
-            } catch (Exception exception) {
-                log.error(exception.getMessage());
+            if (entity != null) {
+                BeanUtils.copyProperties(json, entity);
+                repository.save(entity);
+                return ResponseEntity.ok(entity);
             }
         }
         return ResponseEntity.badRequest().build();
@@ -211,13 +212,16 @@ public class WorkGuideController extends GenericController<WorkGuide>{
         try {
             Long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(encId)));
             int count = repository.updateStatus(_id, Integer.parseInt(newStatus));
+            if(Integer.parseInt(newStatus) == STATUS_FINAL_APPROVAL) {
+                repository.updateType(_id,TYPE_PRODUCTION);
+            }
             if (count > 0) {
                 WorkGuideTransaction wgt = new WorkGuideTransaction();
                 wgt.setActionType(Integer.parseInt(newStatus));
                 wgt.setRemarks(remarks.getValue());
                 wgt.setWorkGuideId(_id);
                 wgtRepository.save(wgt);
-                if(Integer.parseInt(newStatus) == 40) {
+                if(Integer.parseInt(newStatus) == STATUS_FINAL_APPROVAL) {
                     WorkGuide wg = repository.findById(_id).orElse(null);
                     assert wg != null;
                     repository.updateOldType(_id, wg.getDepartmentId());
@@ -383,5 +387,18 @@ public class WorkGuideController extends GenericController<WorkGuide>{
             return temp;
         }
         return null;
+    }
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
+
+    @PostMapping(value = "/listTransactionByWorkGuide/{encId}")
+    public ResponseEntity<List<WorkGuideTransactionDto>> listTransactionByAuditPlan(@PathVariable String encId){
+            Long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(encId)));
+            List<WorkGuideTransactionDto> list = jdbcTemplate.query("select wgt.remarks ,wgt.action_type,wgt.created_at,e.full_name ,e.id " +
+                    " from work_guide_transaction wgt " +
+                    " inner join employee e on wgt.created_by = e.id " +
+                    "where wgt.work_guide_id = ? order by wgt.id desc",new WorkGuideTransactionMapper(), _id);
+            return ResponseEntity.ok(list);
     }
 }

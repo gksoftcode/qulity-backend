@@ -3,7 +3,6 @@ package com.wisecode.core.controller;
 import com.wisecode.core.RoleName;
 import com.wisecode.core.conf.secuirty.CurrentUser;
 import com.wisecode.core.conf.secuirty.exception.AppException;
-import com.wisecode.core.entities.Department;
 import com.wisecode.core.entities.Employee;
 import com.wisecode.core.entities.Role;
 import com.wisecode.core.entities.User;
@@ -18,7 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -78,22 +77,27 @@ public class EmployeeController extends GenericController<Employee>{
     public ResponseEntity<DataTableResponse> listEmployeeByDepartments( @RequestBody DataTableRequest<GenericData> request,
                                      @CurrentUser User currentUser){
         PageRequest pageRequest = preparePageRequest(request);
-        try {
-            String depEnc = request.getData().getData().get("encId").toString();
-            Long dep_id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(depEnc)));
-            DataTableResponse response = new DataTableResponse();
-            List<Long> departmentList = departmentRepository.allChild(dep_id);
-            Page<Employee> page = repository.listEmployeeByDepartments(departmentList,pageRequest);
-            List<Employee> list =page.getContent();
-            response.setCurrentPage(request.getCurrentPage());
-            response.setPageSize(request.getPageSize());
-            response.setTotal(page.getTotalElements());
-            response.setData(list);
-            return ResponseEntity.ok().body(response);
-        }catch (Exception ex){
-            return ResponseEntity.badRequest().build();
-        }
-
+    String depEnc = request.getData().getData().get("encId").toString();
+    Long dep_id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(depEnc)));
+    DataTableResponse response = new DataTableResponse();
+    List<Long> departmentList = departmentRepository.allChild(dep_id);
+    Page<Employee> page = repository.listEmployeeByDepartments(departmentList,pageRequest);
+    List<Employee> list =page.getContent();
+    response.setCurrentPage(request.getCurrentPage());
+    response.setPageSize(request.getPageSize());
+    response.setTotal(page.getTotalElements());
+    response.setData(list);
+    return ResponseEntity.ok().body(response);
+}
+    @PostMapping("/listByDepartment/{encId}")
+    public ResponseEntity<List<Employee>> listEmployeeByDepartment( @PathVariable String encId,
+                                                                        @CurrentUser User currentUser){
+        Long dep_id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(encId)));
+        List<Long> departmentList = departmentRepository.allChild(dep_id);
+        Pageable request = PageRequest.of(0,Integer.MAX_VALUE);
+        Page<Employee> page = repository.listEmployeeByDepartments(departmentList,request);
+        List<Employee> list =page.getContent();
+        return ResponseEntity.ok().body(list);
     }
 
     @PostMapping("/search")
@@ -130,39 +134,31 @@ public class EmployeeController extends GenericController<Employee>{
 
     @PostMapping(value = "/create")
     ResponseEntity<Employee> createEmployee(@Validated @RequestBody Employee json) {
-        try {
-            User user = json.getUser();
-            user.setEmployee(json);
-            json.setDeleted(false);
-            json.setUser(user);
-            user.setActive(true);
-            Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                    .orElseThrow(() -> new AppException("User Role not set."));
-            user.setRoles(Collections.singleton(userRole));
-            user.setPassword(passwordEncoder.encode("12345678"));
-            repository.save(json);
-            return ResponseEntity.ok(json);
-        }catch (Exception ex){
-            return ResponseEntity.badRequest().build();
-        }
+        User user = json.getUser();
+        user.setEmployee(json);
+        json.setDeleted(false);
+        json.setUser(user);
+        user.setActive(true);
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new AppException("User Role not set."));
+        user.setRoles(Collections.singleton(userRole));
+        user.setPassword(passwordEncoder.encode("12345678"));
+        repository.save(json);
+        return ResponseEntity.ok(json);
     }
     @PostMapping(value = "/save/{id}")
     ResponseEntity<Employee> save(@Validated @RequestBody Employee json, @PathVariable String id) {
-            try {
-                long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
-                Employee entity = repository.findById(_id).orElse(null);
-                if (entity != null) {
-                    User user = entity.getUser();
-                    user.setUsername(json.getUser().getUsername());
-                    user.setActive(json.getUser().getActive());
-                    json.setUser(user);
-                    BeanUtils.copyProperties(json, entity);
-                    repository.save(entity);
-                    return ResponseEntity.ok(entity);
-                }
-            } catch (Exception exception) {
-                log.error(exception.getMessage());
-            }
+        long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
+        Employee entity = repository.findById(_id).orElse(null);
+        if (entity != null) {
+            User user = entity.getUser();
+            user.setUsername(json.getUser().getUsername());
+            user.setActive(json.getUser().getActive());
+            json.setUser(user);
+            BeanUtils.copyProperties(json, entity);
+            repository.save(entity);
+            return ResponseEntity.ok(entity);
+        }
         return ResponseEntity.badRequest().build();
     }
 

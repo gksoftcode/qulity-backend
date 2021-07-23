@@ -8,10 +8,7 @@ import com.wisecode.core.payload.DataTableRequest;
 import com.wisecode.core.payload.DataTableResponse;
 import com.wisecode.core.payload.GenericData;
 import com.wisecode.core.payload.PairData;
-import com.wisecode.core.repositories.AuditPlanRepository;
-import com.wisecode.core.repositories.AuditPlanTransactionRepository;
-import com.wisecode.core.repositories.CheckListItemRepository;
-import com.wisecode.core.repositories.CheckListItemTransactionRepository;
+import com.wisecode.core.repositories.*;
 import com.wisecode.core.util.SystemUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
@@ -24,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/audit_plan")
@@ -44,8 +38,18 @@ public class AuditPlanController extends GenericController<AuditPlan>{
     public static final int ITEM_EDITED = 5;
     public static final int ITEM_EVALUATED = 10;
 
+    public static final int CORRECTIVE_ACTION_STATUS_NEW = 0;
+    public static final int CORRECTIVE_ACTION_STATUS_IMPLEMENTED = 1;
+    public static final int CORRECTIVE_ACTION_STATUS_NOT_IMPLEMENTED = 2;
+    public static final int CORRECTIVE_ACTION_APPROVED_NEW = 0;
+    public static final int CORRECTIVE_ACTION_APPROVED_YES = 1;
+    public static final int CORRECTIVE_ACTION_APPROVED_NO = 2;
+
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    CorrectiveActionRepository correctiveActionRepository;
 
     @Autowired
     AuditPlanTransactionRepository auditPlanTransactionRepository;
@@ -122,6 +126,7 @@ public class AuditPlanController extends GenericController<AuditPlan>{
             if (entity != null) {
                 entity.setAuditResult(json.getAuditResult());
                 entity.setRemarks(json.getRemarks());
+                entity.setEmployeeId(json.getEmployeeId());
                 checkListItemRepository.save(entity);
                 addItemTransaction(entity.getId(),ITEM_EVALUATED);
                 return ResponseEntity.ok(entity);
@@ -164,9 +169,9 @@ public class AuditPlanController extends GenericController<AuditPlan>{
     public ResponseEntity<DataTableResponse> search(@Valid @RequestBody DataTableRequest<GenericData> request,
                                                     @CurrentUser User currentUser){
         PageRequest pageRequest = preparePageRequest(request);
-        String year_id = request.getData().getData().get("yearId").toString();
+        String year_id = request.getData().getData().get("yearId")==null?null:request.getData().getData().get("yearId").toString();
         DataTableResponse response = new DataTableResponse();
-        Page<AuditPlan> page = repository.search(Integer.parseInt(year_id),pageRequest);
+        Page<AuditPlan> page = repository.search(year_id == null?null :Integer.parseInt(year_id),pageRequest);
         List<AuditPlan> list =page.getContent();
         response.setCurrentPage(request.getCurrentPage());
         response.setPageSize(request.getPageSize());
@@ -203,16 +208,66 @@ public class AuditPlanController extends GenericController<AuditPlan>{
 
     @PostMapping(value = "/listTransactionByAuditPlan/{encId}")
     public ResponseEntity<List<AuditPlanTransactionDto>> listTransactionByAuditPlan(@PathVariable String encId){
-       try {
            Long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(encId)));
            List<AuditPlanTransactionDto> list = jdbcTemplate.query("select apt.remarks ,apt.action_type,apt.created_at,e.full_name ,e.id " +
                    " from audit_plan_transaction apt " +
                    " inner join employee e on apt.created_by = e.id " +
                    "where apt.audit_plan_id = ? order by apt.id desc",new AuditPlanTransactionMapper(), _id);
            return ResponseEntity.ok(list);
+
+    }
+
+    @PostMapping(value = "/getCorrectiveAction/{auditItemId}")
+    public ResponseEntity<CorrectiveAction> getCorrectiveActionByAuditItemId(@PathVariable Long auditItemId){
+       CorrectiveAction correctiveAction = correctiveActionRepository.findByAuditItemId(auditItemId);
+       if(correctiveAction != null){
+           return ResponseEntity.ok(correctiveAction);
+       }else{
+           return ResponseEntity.badRequest().build();
        }
-       catch (Exception eee){
-          return ResponseEntity.badRequest().build();
-       }
+    }
+    @PostMapping(value = "/saveCorrectiveAction/{id}")
+    public ResponseEntity<CorrectiveAction> saveCorrectiveAction(@RequestBody CorrectiveAction json, @PathVariable String id) throws Exception {
+        if(id!=null && id.equals("-1")){
+            CorrectiveAction entity = correctiveActionRepository.save(json);
+            return ResponseEntity.ok(entity);
+        }
+        long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
+        CorrectiveAction entity = correctiveActionRepository.findById(_id).orElse(null);
+        if (entity != null) {
+            BeanUtils.copyProperties(json, entity);
+            correctiveActionRepository.save(entity);
+            return ResponseEntity.ok(entity);
+        }
+        throw new Exception();
+    }
+
+    @Transactional
+    @PostMapping(value = "/updateCorrectionFollow/{encId}/{newStatus}")
+    public ResponseEntity<CorrectiveAction> updateFollow(@RequestBody PairData<String,String> remarks,@PathVariable String encId,
+                                                            @PathVariable Integer newStatus,
+                                                            @CurrentUser User user) throws Exception {
+            Long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(encId)));
+            correctiveActionRepository.updateFollow(newStatus,user.getId(),new Date(),_id,remarks.getValue());
+           CorrectiveAction ca = correctiveActionRepository.findById(_id).orElse(null);
+           if(ca != null){
+               return ResponseEntity.ok(ca);
+           }else {
+               throw new Exception("Correction Action not found");
+           }
+    }
+    @Transactional
+    @PostMapping(value = "/updateCorrectionApproved/{encId}/{newStatus}")
+    public ResponseEntity<CorrectiveAction> updateApproved(@PathVariable String encId,
+                                                         @PathVariable Integer newStatus,
+                                                         @CurrentUser User user) throws Exception {
+        Long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(encId)));
+        correctiveActionRepository.updateApproved(newStatus,user.getId(),new Date(),_id);
+        CorrectiveAction ca = correctiveActionRepository.findById(_id).orElse(null);
+        if(ca != null){
+            return ResponseEntity.ok(ca);
+        }else {
+            throw new Exception("Correction Action not found");
+        }
     }
 }
