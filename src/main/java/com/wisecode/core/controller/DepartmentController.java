@@ -62,4 +62,10 @@ public class DepartmentController extends GenericController<Department> {
            repository.setOrderNo(elem.getKey(),elem.getValue().intValue());
        }
     }
+
+    @Override
+    protected boolean canDelete(Long id) {
+     long total =  repository.countAttachmentByDepartmentId(id)+ repository.countEmployeeByDepartmentId(id)+repository.countWorkGuideByDepartmentId(id)+repository.countAuditPlanByDepartmentId(id);
+     return total == 0;
+    }
 }

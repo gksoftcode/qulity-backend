@@ -32,14 +32,14 @@ public abstract class GenericController<T extends BaseEntity> {
     @PostMapping(value = "/save/{id}")
     ResponseEntity<T> save(@Validated @RequestBody T json, @PathVariable String id) {
         if (id.equals("-1")) {
-            repository.save(json);
+            json = repository.save(json);
             return ResponseEntity.ok(json);
         } else {
             long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
             T entity = repository.findById(_id).orElse(null);
             if (entity != null) {
                 BeanUtils.copyProperties(json, entity);
-                repository.save(entity);
+                entity = repository.save(entity);
                 return ResponseEntity.ok(entity);
             }
         }
@@ -127,9 +127,17 @@ public abstract class GenericController<T extends BaseEntity> {
 
     @DeleteMapping(value="/{id}")
     public @ResponseBody Map<String, Object> delete(@PathVariable Long id) {
-        this.repository.deleteById(id);
         Map<String, Object> m = new HashMap<>();
-        m.put("success", true);
+        if(canDelete(id)) {
+            this.repository.deleteById(id);
+            m.put("success", true);
+        }else{
+            m.put("success", false);
+        }
         return m;
+    }
+
+    protected boolean canDelete(Long id){
+        return true;
     }
 }

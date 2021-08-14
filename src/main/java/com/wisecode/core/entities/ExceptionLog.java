@@ -29,7 +29,7 @@ public class ExceptionLog implements Serializable, BaseEntity {
     @Column(name = "EXCEPTION_NAME")
     private String exceptionName;
 
-    @Column(name = "MESSAGE")
+    @Column(name = "MESSAGE", length = 4000)
     private String message;
 
     @Column(name = "USER_NUMBER")

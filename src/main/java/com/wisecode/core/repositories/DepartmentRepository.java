@@ -36,4 +36,18 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     List<Department> listDepartments();
     @Query("select dep from Department dep where dep.id not in (select wg.departmentId from WorkGuide wg where wg.type in (1,100))")
     List<Department> missingWorkGuide();
+
+    @Query("select count(emp) from Employee emp where emp.departmentId = :dep_id")
+    long countEmployeeByDepartmentId(@Param("dep_id") Long dep_id);
+
+    @Query("select count(wg) from WorkGuide wg where wg.departmentId = :dep_id")
+    long countWorkGuideByDepartmentId(@Param("dep_id") Long dep_id);
+
+    @Query("select count(ap) from AuditPlan ap where ap.departmentId = :dep_id")
+    long countAuditPlanByDepartmentId(@Param("dep_id") Long dep_id);
+
+    @Query("select count(atta) from Attachment atta where atta.departmentId = :dep_id")
+    long countAttachmentByDepartmentId(@Param("dep_id") Long dep_id);
+
+
 }

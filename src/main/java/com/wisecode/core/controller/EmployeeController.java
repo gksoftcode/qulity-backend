@@ -133,7 +133,7 @@ public class EmployeeController extends GenericController<Employee>{
     }
 
     @PostMapping(value = "/create")
-    ResponseEntity<Employee> createEmployee(@Validated @RequestBody Employee json) {
+    ResponseEntity<Employee> createEmployee(@RequestBody Employee json) {
         User user = json.getUser();
         user.setEmployee(json);
         json.setDeleted(false);

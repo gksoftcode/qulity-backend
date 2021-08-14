@@ -1,15 +1,25 @@
 package com.wisecode.core.repositories;
 
 import com.wisecode.core.entities.CorrectiveAction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
 
 import java.util.Date;
+import java.util.List;
 
 public interface CorrectiveActionRepository extends JpaRepository<CorrectiveAction,Long> {
+    @Query("select ca from CorrectiveAction ca where ca.auditItemId in (select cli.id from CheckListItem cli where cli.auditPlanId = :auditId)")
+    Page<CorrectiveAction> findAllByAuditId(Long auditId, Pageable pageable);
+
+    @Query("select ca from CorrectiveAction ca where ca.auditItemId in " +
+            "(select cli.id from CheckListItem cli where cli.auditPlanId in " +
+            "(select audit.id from AuditFinalReport afr join afr.auditPlans audit where afr.id = :auditReportId))")
+    Page<CorrectiveAction> findAllByReportId(@Param("auditReportId") Long auditReportId, Pageable pageable);
+
     CorrectiveAction findByAuditItemId(Long auditItemId);
     @Modifying
     @Query("update CorrectiveAction  ca set ca.approved = :approved ," +

@@ -1,14 +1,13 @@
 package com.wisecode.core.controller;
 
+import com.wisecode.core.RoleName;
 import com.wisecode.core.conf.secuirty.CurrentUser;
 import com.wisecode.core.dto.AuditPlanTransactionDto;
 import com.wisecode.core.entities.*;
 import com.wisecode.core.mapper.AuditPlanTransactionMapper;
-import com.wisecode.core.payload.DataTableRequest;
-import com.wisecode.core.payload.DataTableResponse;
-import com.wisecode.core.payload.GenericData;
-import com.wisecode.core.payload.PairData;
+import com.wisecode.core.payload.*;
 import com.wisecode.core.repositories.*;
+import com.wisecode.core.util.ApplicationUtil;
 import com.wisecode.core.util.SystemUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.BeanUtils;
@@ -47,6 +46,15 @@ public class AuditPlanController extends GenericController<AuditPlan>{
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    ApplicationUtil applicationUtil;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
+
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     CorrectiveActionRepository correctiveActionRepository;
@@ -170,8 +178,41 @@ public class AuditPlanController extends GenericController<AuditPlan>{
                                                     @CurrentUser User currentUser){
         PageRequest pageRequest = preparePageRequest(request);
         String year_id = request.getData().getData().get("yearId")==null?null:request.getData().getData().get("yearId").toString();
+        String dep_id = request.getData().getData().get("depId")==null?null:request.getData().getData().get("depId").toString();
         DataTableResponse response = new DataTableResponse();
-        Page<AuditPlan> page = repository.search(year_id == null?null :Integer.parseInt(year_id),pageRequest);
+        boolean fullAccess = false;
+        boolean sectionManger = false;
+        for (Role role:currentUser.getRoles()){
+            if(role.getName().equals(RoleName.ROLE_MANAGER)||
+                    role.getName().equals(RoleName.ROLE_QUALITY)||
+                    role.getName().equals(RoleName.ROLE_ADMIN)){
+                fullAccess = true;
+                break;
+            }
+            if(role.getName().equals(RoleName.ROLE_SECTION_MANAGER)){
+                sectionManger = true;
+            }
+        }
+        int fullSearch = 1;
+        Integer yearId = year_id == null ? null : Integer.parseInt(year_id);
+        long depId = dep_id == null ? -1L : Long.parseLong(dep_id);
+        List<Long> departmentList = new ArrayList<>();
+        departmentList.add(-1L);
+        if(!fullAccess && !sectionManger && depId != -1){
+            Employee emp = employeeRepository.findById(currentUser.getId()).get();
+            sectionManger = applicationUtil.isManager(emp) && (emp.getDepartmentId().equals(depId)) ;
+        }
+        if(depId != -1 && (fullAccess || sectionManger)){
+            fullSearch = 0;
+            try {
+                departmentList = departmentRepository.allChild(depId);
+            }catch (Exception ex){
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        Page<AuditPlan> page =fullAccess?repository.searchAdmin(yearId,fullSearch,departmentList,pageRequest) :
+                repository.search(yearId,currentUser.getId(),departmentList,pageRequest);
         List<AuditPlan> list =page.getContent();
         response.setCurrentPage(request.getCurrentPage());
         response.setPageSize(request.getPageSize());
@@ -241,6 +282,12 @@ public class AuditPlanController extends GenericController<AuditPlan>{
         }
         throw new Exception();
     }
+    @PostMapping(value = "/deleteCorrectiveAction/{id}")
+    public void deleteCorrectiveAction(@RequestBody CorrectiveAction json, @PathVariable String id) throws Exception {
+
+        long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
+        correctiveActionRepository.deleteById(_id);
+    }
 
     @Transactional
     @PostMapping(value = "/updateCorrectionFollow/{encId}/{newStatus}")
@@ -270,4 +317,35 @@ public class AuditPlanController extends GenericController<AuditPlan>{
             throw new Exception("Correction Action not found");
         }
     }
+
+    @PostMapping("/listCorrectionByAudit")
+    public ResponseEntity<DataTableResponse> listCorrectionByAudit(@Valid @RequestBody DataTableRequest<GenericData> request,
+                                                                @CurrentUser User currentUser){
+        PageRequest pageRequest = preparePageRequest(request);
+        String auditId = request.getData().getData().get("auditId")==null?null:request.getData().getData().get("auditId").toString();
+        DataTableResponse response = new DataTableResponse();
+        Page<CorrectiveAction> page = correctiveActionRepository.findAllByAuditId(Long.parseLong(auditId),pageRequest);
+        List<CorrectiveAction> list =page.getContent();
+        response.setCurrentPage(request.getCurrentPage());
+        response.setPageSize(request.getPageSize());
+        response.setTotal(page.getTotalElements());
+        response.setData(list);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/listCorrectionByReport")
+    public ResponseEntity<DataTableResponse> listCorrectionByReport(@Valid @RequestBody DataTableRequest<GenericData> request,
+                                                                   @CurrentUser User currentUser){
+        PageRequest pageRequest = preparePageRequest(request);
+        String _id = request.getData().getData().get("reportId")==null?null:request.getData().getData().get("reportId").toString();
+        DataTableResponse response = new DataTableResponse();
+        Page<CorrectiveAction> page = correctiveActionRepository.findAllByReportId(Long.parseLong(_id),pageRequest);
+        List<CorrectiveAction> list =page.getContent();
+        response.setCurrentPage(request.getCurrentPage());
+        response.setPageSize(request.getPageSize());
+        response.setTotal(page.getTotalElements());
+        response.setData(list);
+        return ResponseEntity.ok().body(response);
+    }
+
 }

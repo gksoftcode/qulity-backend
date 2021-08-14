@@ -68,6 +68,12 @@ public class WorkGuideController extends GenericController<WorkGuide>{
     @PostMapping("/search")
     public ResponseEntity<?> getList(@Valid @RequestBody DataTableRequest<GenericData> request,
                                      @CurrentUser User currentUser){
+        if(request.getSortBy()!= null && request.getSortBy().equals("departmentName")){
+            request.setSortBy("department.name");
+        }
+        if(request.getSortBy()!= null && request.getSortBy().equals("departmentNo")){
+            request.setSortBy("department.departmentNo");
+        }
         PageRequest pageRequest = preparePageRequest(request);
         String str_id = request.getData().getData().get("departmentId").toString();
         List<Long> departmentList = null;
@@ -252,7 +258,7 @@ public class WorkGuideController extends GenericController<WorkGuide>{
         long departmentId=Long.parseLong(result.get("department_id").toString());
         Department department = departmentRepository.findById(departmentId).get();
         if(type == TYPE_NEW || type == TYPE_NEW_VERSION){
-            Employee employee = employeeRepository.findByUserId(user.getId());
+            Employee employee = employeeRepository.findById(user.getId()).get();
 
             if((status ==STATUS_SUBMITTED || status == STATUS_QUALITY_REJECTED )&&
                     ( (appUtil.hasPermission(employee.getUser(), RoleName.ROLE_SECTION_MANAGER)
