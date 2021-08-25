@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -58,6 +59,12 @@ public class ExceptionLogController extends GenericController<ExceptionLog>{
         Date dateFrom=new SimpleDateFormat("yyyy-MM-dd").parse(fromDate);
         String toDate = request.getData().getData().get("toDate").toString();
         Date dateTo=new SimpleDateFormat("yyyy-MM-dd").parse(toDate);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateTo);
+        cal.set(Calendar.HOUR,23);
+        cal.set(Calendar.MINUTE,59);
+        cal.set(Calendar.SECOND,59);
+        dateTo = cal.getTime();
         String empId = request.getData().getData().get("empId").toString();
         String id = request.getData().getData().get("id").toString();
         SqlParameterSource parameter =  new MapSqlParameterSource()

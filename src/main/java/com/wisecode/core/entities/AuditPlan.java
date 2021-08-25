@@ -30,7 +30,7 @@ public class AuditPlan extends UserDateAudit implements BaseEntity {
     Integer status;
 
     @JsonIgnoreProperties({"createdAt","updatedAt","createdBy","updatedBy","department","user"})
-    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.REMOVE},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.REFRESH,CascadeType.REMOVE},fetch = FetchType.LAZY)
     List<Employee> auditors;
 
 

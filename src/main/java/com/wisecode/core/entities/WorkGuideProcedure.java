@@ -33,6 +33,10 @@ public class WorkGuideProcedure extends UserDateAudit implements BaseEntity{
     @JoinColumn(name = "procedure_id")
     List<ProcedureStep> steps;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "procedure_id")
+    List<WorkGuideProcedureResponsibility> responsibilities;
+
     @Transient
     @Override
     public String getEncId() {

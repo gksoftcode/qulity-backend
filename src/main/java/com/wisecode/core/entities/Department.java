@@ -43,7 +43,8 @@ public class Department extends UserDateAudit implements BaseEntity{
 
     Integer departmentNo;
 
-    @JsonIgnoreProperties({"department","color","dob","gender","deleted","jobId",
+    @JsonIgnore
+    @JsonIgnoreProperties({"department","color","dob","gender","deleted","jobId","job",
            "mobileNumber","user","shortName","createdAt","updatedAt","createdBy","updatedBy"})
     @OneToOne
     @NotFound(action = NotFoundAction.IGNORE)

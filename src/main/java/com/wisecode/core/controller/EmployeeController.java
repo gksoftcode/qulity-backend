@@ -26,9 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/employee")
@@ -133,7 +131,15 @@ public class EmployeeController extends GenericController<Employee>{
     }
 
     @PostMapping(value = "/create")
-    ResponseEntity<Employee> createEmployee(@RequestBody Employee json) {
+    ResponseEntity<Map<String, Object>> createEmployee(@RequestBody Employee json) {
+        Map<String, Object> m = new HashMap<>(1);
+        if(repository.existsByEmpNumber(json.getEmpNumber())){
+            m.put("errorCode",1);
+            return ResponseEntity.badRequest().body(m);
+        }if(userRepository.existsByUsername(json.getUser().getUsername())){
+            m.put("errorCode",2);
+            return ResponseEntity.badRequest().body(m);
+        }
         User user = json.getUser();
         user.setEmployee(json);
         json.setDeleted(false);
@@ -144,12 +150,24 @@ public class EmployeeController extends GenericController<Employee>{
         user.setRoles(Collections.singleton(userRole));
         user.setPassword(passwordEncoder.encode("12345678"));
         repository.save(json);
-        return ResponseEntity.ok(json);
+        m.put("employee",json);
+        return ResponseEntity.ok(m);
     }
-    @PostMapping(value = "/save/{id}")
-    ResponseEntity<Employee> save(@Validated @RequestBody Employee json, @PathVariable String id) {
+    @PostMapping(value = "/saveAndUpdate/{id}")
+    ResponseEntity<Map<String, Object>> saveAndUpdate(@Validated @RequestBody Employee json, @PathVariable String id) {
+        Map<String, Object> m = new HashMap<>(1);
         long _id = Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(id)));
         Employee entity = repository.findById(_id).orElse(null);
+        if(repository.existsByEmpNumberAndIdNot(json.getEmpNumber(),_id)){
+            m.put("employee",entity);
+            m.put("errorCode",1);
+            return ResponseEntity.badRequest().body(m);
+        }if(userRepository.existsByUsernameAndIdNot(json.getUser().getUsername(),json.getUser().getId())){
+            m.put("employee",entity);
+            m.put("errorCode",2);
+            return ResponseEntity.badRequest().body(m);
+        }
+
         if (entity != null) {
             User user = entity.getUser();
             user.setUsername(json.getUser().getUsername());
@@ -157,7 +175,8 @@ public class EmployeeController extends GenericController<Employee>{
             json.setUser(user);
             BeanUtils.copyProperties(json, entity);
             repository.save(entity);
-            return ResponseEntity.ok(entity);
+            m.put("employee",entity);
+            return ResponseEntity.ok(m);
         }
         return ResponseEntity.badRequest().build();
     }

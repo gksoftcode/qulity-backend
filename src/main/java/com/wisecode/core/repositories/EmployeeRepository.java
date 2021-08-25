@@ -12,6 +12,10 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
+
+    boolean existsByEmpNumberAndIdNot(Long empNumber,Long id);
+    boolean existsByEmpNumber(Long empNumber);
+
     Employee findByUser(User user);
     Page<Employee> findAllByFullNameIsLikeAndDeletedIsFalse(String name, Pageable pageable);
     @Query("select emp from Employee emp where (:emp_name is null or emp.fullName like :emp_name) and (:emp_no is null or emp.empNumber = :emp_no)")

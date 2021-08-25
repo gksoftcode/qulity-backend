@@ -27,4 +27,5 @@ public class DocumentType extends UserDateAudit implements BaseEntity{
     }
 
     String name;
+    Boolean active;
 }

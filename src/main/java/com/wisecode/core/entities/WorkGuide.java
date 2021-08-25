@@ -2,7 +2,6 @@ package com.wisecode.core.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisecode.core.audit.UserDateAudit;
-import com.wisecode.core.model.FileUploadDtls;
 import com.wisecode.core.util.SystemUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

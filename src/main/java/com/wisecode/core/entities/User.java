@@ -2,6 +2,7 @@ package com.wisecode.core.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wisecode.core.audit.DateAudit;
+import com.wisecode.core.audit.UserDateAudit;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,8 +23,7 @@ import java.util.Set;
         })
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"},callSuper = false)
-public class User  implements UserDetails {
+public class User extends UserDateAudit implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -86,5 +87,18 @@ public class User  implements UserDetails {
     @Override
     public boolean isEnabled() {
         return getActive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

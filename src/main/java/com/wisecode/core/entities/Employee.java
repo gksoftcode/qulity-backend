@@ -52,7 +52,7 @@ public class Employee extends UserDateAudit implements BaseEntity {
 
     private String mobileNumber;
 
-    @JsonIgnoreProperties({"password","createdAt","updatedAt","authorities"})
+    @JsonIgnoreProperties({"password","createdAt","updatedAt","authorities","createdBy","updatedBy","employee","roles"})
     @OneToOne(mappedBy = "employee",cascade = CascadeType.ALL)
     private User user;
 

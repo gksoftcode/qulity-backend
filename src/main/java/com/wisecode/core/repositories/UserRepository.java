@@ -11,11 +11,15 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
+
+
     List<User> findByIdIn(List<Long> userIds);
 
     Optional<User> findByUsername(String username);
 
     Boolean existsByUsername(String username);
+
+    Boolean existsByUsernameAndIdNot(String userName,Long id);
 
     @Modifying
     @Query("update User usr set usr.password = :password where usr.id = :id")
