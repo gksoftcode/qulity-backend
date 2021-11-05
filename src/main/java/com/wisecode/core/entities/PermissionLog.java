@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "permission_log")
 @Getter
 @Setter
 public class PermissionLog extends UserDateAudit {

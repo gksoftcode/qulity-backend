@@ -9,7 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "work_guide_definition")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id",callSuper = false)

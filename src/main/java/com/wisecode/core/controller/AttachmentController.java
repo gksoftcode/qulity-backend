@@ -223,10 +223,17 @@ public class AttachmentController  extends GenericController<Attachment>{
     }
 
     @PostMapping(value = "/listApproved/{departmentId}")
-    ResponseEntity<List<Attachment>> getListApprovedByDepartment(@PathVariable String departmentId){
+    ResponseEntity<List<AttachmentDto>> getListApprovedByDepartment(@PathVariable String departmentId){
         Long _id =Long.parseLong(Objects.requireNonNull(SystemUtil.decrypt(departmentId)));
-        List<Attachment> list = repository.findByDepartmentIdAndStatusOrderByOrderNo(_id,AttachmentController.STATUS_APPROVED);
-        return ResponseEntity.ok(list);
+        SqlParameterSource parameter =  new MapSqlParameterSource()
+                .addValue("departmentId",_id);
+        List<AttachmentDto> lst = namedParameterJdbcTemplate.query("select * from (select atta.id,atta.name,atta.version,atta.department_id,atta.issue_date" +
+                " ,atta.uuid,atta.order_no,atta.status,d.name department_name,d.department_no,coalesce(OCTET_LENGTH(atta.pdf_file_data),0) pdf_file_size" +
+                " ,coalesce(OCTET_LENGTH(atta.temp_file_data),0) temp_file_size  from attachment atta inner join department d on atta.department_id = d.id" +
+                " where atta.department_id = :departmentId and atta.status = " + AttachmentController.STATUS_APPROVED +" ) tab order by tab.order_no",
+                parameter,BeanPropertyRowMapper.newInstance(AttachmentDto.class));
+        //List<Attachment> list = repository.findByDepartmentIdAndStatusOrderByOrderNo(_id,AttachmentController.STATUS_APPROVED);
+        return ResponseEntity.ok(lst);
     }
     @PostMapping(value = "/listApprovedByDepartment/{departmentId}")
     ResponseEntity<List<Attachment>> getListApprovedByDepartment(@PathVariable Long departmentId){

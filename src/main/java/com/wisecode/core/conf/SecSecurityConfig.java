@@ -92,6 +92,7 @@ public class SecSecurityConfig extends WebSecurityConfigurerAdapter {
                             "/**/*.css",
                             "/**/*.js")
                     .permitAll()
+                    .antMatchers("/ws/**").permitAll()
                     .antMatchers("/api/auth/**")
                     .permitAll()
                     .antMatchers("/api/department/root").permitAll()

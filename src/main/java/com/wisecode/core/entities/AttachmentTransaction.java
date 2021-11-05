@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "attachment_transaction")
 @Getter
 @Setter
 public class AttachmentTransaction extends UserDateAudit implements BaseEntity {

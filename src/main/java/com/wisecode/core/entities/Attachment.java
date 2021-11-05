@@ -7,6 +7,7 @@ import com.wisecode.core.util.SystemUtil;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -45,14 +46,17 @@ public class Attachment extends UserDateAudit implements BaseEntity{
 
     @JsonIgnore
     @Lob
+    @Basic(fetch=FetchType.LAZY)
     byte[] fileData;
 
     @JsonIgnore
     @Lob
+    @Basic(fetch=FetchType.LAZY)
     byte[] tempFileData;
 
     @JsonIgnore
     @Lob
+    @Basic(fetch=FetchType.LAZY)
     byte[] pdfFileData;
 
     Integer status;

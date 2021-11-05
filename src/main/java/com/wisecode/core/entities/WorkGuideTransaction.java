@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "work_guide_transaction")
 @Getter
 @Setter
 public class WorkGuideTransaction extends UserDateAudit implements BaseEntity{

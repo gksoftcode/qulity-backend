@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "work_guide")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id",callSuper = false)

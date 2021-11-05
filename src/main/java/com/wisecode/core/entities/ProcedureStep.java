@@ -1,5 +1,7 @@
 package com.wisecode.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wisecode.core.audit.UserDateAudit;
 import com.wisecode.core.util.SystemUtil;
 import lombok.EqualsAndHashCode;
@@ -10,7 +12,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "procedure_step")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id",callSuper = false)
@@ -36,11 +38,15 @@ public class ProcedureStep extends UserDateAudit implements BaseEntity{
     Boolean val8;
     Boolean val9;
 
+    @JsonIgnoreProperties({"fileData","tempFileData","pdfFileData","createdAt","updatedAt","createdBy","updatedBy"})
     @ManyToMany
     List<Attachment> files;
 
     @ManyToMany
     List<DocumentType> documentTypes;
+
+    @ElementCollection
+    List<String> docs;
     
     @Transient
     @Override

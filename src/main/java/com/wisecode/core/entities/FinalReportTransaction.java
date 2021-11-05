@@ -1,28 +1,25 @@
 package com.wisecode.core.entities;
 
-import com.wisecode.core.audit.UserDateAudit;
 import com.wisecode.core.util.SystemUtil;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "work_guide_pointer")
+@Table(name = "final_report_transaction")
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id",callSuper = false)
-public class WorkGuidePointer extends UserDateAudit implements BaseEntity{
+public class FinalReportTransaction implements BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 2000)
-    String name;
+    Integer actionType;
 
-    @Column(name = "order_no")
-    Integer orderNo;
+    Long finalReportId;
+
+    String remarks;
 
     @Transient
     @Override

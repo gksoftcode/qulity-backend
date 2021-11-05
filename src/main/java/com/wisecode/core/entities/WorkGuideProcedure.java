@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "work_guide_procedure")
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id",callSuper = false)
